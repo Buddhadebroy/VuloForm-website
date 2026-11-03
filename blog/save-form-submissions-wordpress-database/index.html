@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="en" class="FLPYxG_variable antialiased">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>How to save form submissions in WordPress (and export them to CSV)</title>
+    <meta
+      name="description"
+      content="Why emailing form entries isn’t enough, how to store submissions in your WordPress database, and how to search, manage and export them."
+    />
+    <link rel="canonical" href="https://vuloform.com/blog/save-form-submissions-wordpress-database/" />
+    <meta property="og:title" content="How to save form submissions in WordPress (and export them to CSV)" />
+    <meta
+      property="og:description"
+      content="Why emailing form entries isn’t enough, how to store submissions in your WordPress database, and how to search, manage and export them."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2026-10-20" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="How to save form submissions in WordPress (and export them to CSV)" />
+    <meta
+      name="twitter:description"
+      content="Why emailing form entries isn’t enough, how to store submissions in your WordPress database, and how to search, manage and export them."
+    />
+    <link rel="icon" href="../../assets/images/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="../../assets/css/style.css" />
+  </head>
+  <body class="grain min-h-full">
+    <header
+      class="intro fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4"
+      style="opacity: 0; transform: translateY(-40px); --dur: 0.7s"
+    >
+      <nav
+        id="site-nav"
+        data-on="border-line/80 bg-white/75 shadow-[0_10px_40px_-20px_rgba(13,26,69,0.35)] backdrop-blur-xl"
+        data-off="border-transparent"
+        class="flex w-full max-w-6xl items-center justify-between rounded-full border border-transparent px-4 py-2.5 transition-all duration-500 sm:px-5"
+      >
+        <a aria-label="VuloForm home" href="../../index.html"
+          ><span class="inline-flex items-center gap-2.5"
+            ><img src="../../assets/images/brand-icon.svg" alt="" width="34" height="32" aria-hidden="true" /><span
+              class="display text-xl font-bold tracking-tight text-ink"
+              >Vulo<span class="text-navy">Form</span></span
+            ></span
+          ></a
+        >
+        <ul class="hidden items-center gap-1 md:flex">
+          <li>
+            <a
+              class="rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-sky-soft hover:text-navy"
+              href="../../index.html#builder"
+              >Builder</a
+            >
+          </li>
+          <li>
+            <a
+              class="rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-sky-soft hover:text-navy"
+              href="../../index.html#logic"
+              >Logic</a
+            >
+          </li>
+          <li>
+            <a
+              class="rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-sky-soft hover:text-navy"
+              href="../../index.html#features"
+              >Features</a
+            >
+          </li>
+          <li>
+            <a
+              class="rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-sky-soft hover:text-navy"
+              href="../../compare/index.html"
+              >Compare</a
+            >
+          </li>
+          <li>
+            <a
+              class="rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-sky-soft hover:text-navy"
+              href="../../blog/index.html"
+              >Blog</a
+            >
+          </li>
+          <li>
+            <a
+              class="rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-sky-soft hover:text-navy"
+              href="../../index.html#faq"
+              >FAQ</a
+            >
+          </li>
+        </ul>
+        <div class="flex items-center gap-2">
+          <a
+            href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform"
+            class="hidden rounded-full bg-navy px-5 py-2.5 hover:bg-navy-light text-sm font-semibold text-white transition-all hover:-translate-y-0.5 active:translate-y-0 sm:inline-block"
+            >Get it free</a
+          ><button
+            id="menu-toggle"
+            class="grid h-10 w-10 place-items-center rounded-full bg-white/80 md:hidden"
+            aria-label="Menu"
+            aria-expanded="false"
+          >
+            <span class="relative block h-3 w-5"
+              ><span
+                data-on="top-1.5 rotate-45"
+                data-off="top-0"
+                class="absolute left-0 top-0 h-0.5 w-5 bg-ink transition-all"
+              ></span
+              ><span
+                data-on="top-1.5 -rotate-45"
+                data-off="top-3"
+                class="absolute left-0 top-3 h-0.5 w-5 bg-ink transition-all"
+              ></span
+            ></span>
+          </button>
+        </div>
+      </nav>
+      <ul
+        id="mobile-menu"
+        hidden=""
+        class="pop-in absolute top-20 right-4 left-4 rounded-3xl border border-line bg-white p-3 shadow-xl md:hidden"
+      >
+        <li>
+          <a class="block rounded-2xl px-4 py-3 font-medium hover:bg-sky-soft" href="../../index.html#builder"
+            >Builder</a
+          >
+        </li>
+        <li>
+          <a class="block rounded-2xl px-4 py-3 font-medium hover:bg-sky-soft" href="../../index.html#logic">Logic</a>
+        </li>
+        <li>
+          <a class="block rounded-2xl px-4 py-3 font-medium hover:bg-sky-soft" href="../../index.html#features"
+            >Features</a
+          >
+        </li>
+        <li>
+          <a class="block rounded-2xl px-4 py-3 font-medium hover:bg-sky-soft" href="../../compare/index.html"
+            >Compare</a
+          >
+        </li>
+        <li>
+          <a class="block rounded-2xl px-4 py-3 font-medium hover:bg-sky-soft" href="../../blog/index.html">Blog</a>
+        </li>
+        <li>
+          <a class="block rounded-2xl px-4 py-3 font-medium hover:bg-sky-soft" href="../../index.html#faq">FAQ</a>
+        </li>
+        <li>
+          <a
+            href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform"
+            class="mt-1 block rounded-2xl bg-navy px-4 py-3 text-center font-semibold text-white"
+            >Get it free</a
+          >
+        </li>
+      </ul>
+    </header>
+    <main class="pt-28 sm:pt-36">
+      <div class="mx-auto max-w-6xl gap-12 px-4 sm:px-6 lg:grid lg:grid-cols-[14rem_minmax(0,1fr)]">
+        <div class="hidden lg:col-start-1 lg:row-start-1 lg:block lg:pt-1">
+          <nav
+            aria-label="Table of contents"
+            class="sticky top-28 hidden max-h-[calc(100vh-8rem)] overflow-y-auto lg:block"
+          >
+            <p class="mb-3 text-xs font-bold tracking-wide text-ink-soft uppercase">On this page</p>
+            <ol data-toc="true" class="space-y-1 border-l border-line">
+              <li>
+                <a
+                  href="#why-email-alone-is-risky"
+                  aria-current="location"
+                  data-on="border-navy font-bold text-navy"
+                  data-off="border-transparent text-ink-soft hover:text-ink"
+                  class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-navy font-bold text-navy"
+                  >Why email alone is risky</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#what-happens-in-popular-plugins"
+                  data-on="border-navy font-bold text-navy"
+                  data-off="border-transparent text-ink-soft hover:text-ink"
+                  class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                  >What happens in popular plugins</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#what-a-good-submissions-screen-should-do"
+                  data-on="border-navy font-bold text-navy"
+                  data-off="border-transparent text-ink-soft hover:text-ink"
+                  class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                  >What a good submissions screen should do</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#managing-submissions-in-vuloform"
+                  data-on="border-navy font-bold text-navy"
+                  data-off="border-transparent text-ink-soft hover:text-ink"
+                  class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                  >Managing submissions in VuloForm</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#keep-what-you-need-delete-what-you-don-t"
+                  data-on="border-navy font-bold text-navy"
+                  data-off="border-transparent text-ink-soft hover:text-ink"
+                  class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                  >Keep what you need, delete what you don’t</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#privacy-and-ownership"
+                  data-on="border-navy font-bold text-navy"
+                  data-off="border-transparent text-ink-soft hover:text-ink"
+                  class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                  >Privacy and ownership</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#a-simple-routine"
+                  data-on="border-navy font-bold text-navy"
+                  data-off="border-transparent text-ink-soft hover:text-ink"
+                  class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                  >A simple routine</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#questions-people-ask"
+                  data-on="border-navy font-bold text-navy"
+                  data-off="border-transparent text-ink-soft hover:text-ink"
+                  class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                  >Questions people ask</a
+                >
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <article class="min-w-0 max-w-3xl lg:col-start-2 lg:row-start-1">
+          <nav aria-label="Breadcrumb" class="text-sm text-ink-soft">
+            <a class="hover:text-ink" href="../../blog/index.html">Blog</a> <span aria-hidden="true">/</span>
+            <!-- -->How-to
+          </nav>
+          <h1 class="mt-5 text-4xl leading-tight font-bold tracking-tight sm:text-5xl">
+            How to save form submissions in WordPress (and export them to CSV)
+          </h1>
+          <p class="mt-5 text-sm text-ink-soft">
+            By the VuloForm team ·
+            <!-- -->20 October 2026<!-- -->
+            ·
+            <!-- -->4<!-- -->
+            min read
+          </p>
+          <details class="mt-8 rounded-2xl border border-line bg-white px-5 py-3 lg:hidden">
+            <summary class="cursor-pointer text-sm font-bold">Table of contents</summary>
+            <nav aria-label="Table of contents" class="mt-3">
+              <ol data-toc="true" class="space-y-1 border-l border-line">
+                <li>
+                  <a
+                    href="#why-email-alone-is-risky"
+                    aria-current="location"
+                    data-on="border-navy font-bold text-navy"
+                    data-off="border-transparent text-ink-soft hover:text-ink"
+                    class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-navy font-bold text-navy"
+                    >Why email alone is risky</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#what-happens-in-popular-plugins"
+                    data-on="border-navy font-bold text-navy"
+                    data-off="border-transparent text-ink-soft hover:text-ink"
+                    class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                    >What happens in popular plugins</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#what-a-good-submissions-screen-should-do"
+                    data-on="border-navy font-bold text-navy"
+                    data-off="border-transparent text-ink-soft hover:text-ink"
+                    class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                    >What a good submissions screen should do</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#managing-submissions-in-vuloform"
+                    data-on="border-navy font-bold text-navy"
+                    data-off="border-transparent text-ink-soft hover:text-ink"
+                    class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                    >Managing submissions in VuloForm</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#keep-what-you-need-delete-what-you-don-t"
+                    data-on="border-navy font-bold text-navy"
+                    data-off="border-transparent text-ink-soft hover:text-ink"
+                    class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                    >Keep what you need, delete what you don’t</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#privacy-and-ownership"
+                    data-on="border-navy font-bold text-navy"
+                    data-off="border-transparent text-ink-soft hover:text-ink"
+                    class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                    >Privacy and ownership</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#a-simple-routine"
+                    data-on="border-navy font-bold text-navy"
+                    data-off="border-transparent text-ink-soft hover:text-ink"
+                    class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                    >A simple routine</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#questions-people-ask"
+                    data-on="border-navy font-bold text-navy"
+                    data-off="border-transparent text-ink-soft hover:text-ink"
+                    class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                    >Questions people ask</a
+                  >
+                </li>
+              </ol>
+            </nav>
+          </details>
+          <div class="mt-10 space-y-5 text-[18px] leading-[1.75] text-ink">
+            <p>
+              Many WordPress sites collect leads in a way that depends entirely on email. A form sends a message,
+              someone reads it, and that is the only record. It works until the message lands in spam, the mailbox fills
+              up or a colleague deletes it. Then a customer’s enquiry is simply gone.
+            </p>
+            <p>
+              Saving submissions in your WordPress database fixes that. This guide explains why it matters, what to look
+              for, and how to manage entries once you have them.
+            </p>
+          </div>
+          <section id="why-email-alone-is-risky" class="mt-12 scroll-mt-24">
+            <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">Why email alone is risky</h2>
+            <div class="mt-4 space-y-5 text-[18px] leading-[1.75] text-ink-soft">
+              <p>
+                Email delivery from a WordPress site is unreliable by default. Hosts throttle outgoing mail, spam
+                filters are aggressive, and a small configuration mistake can silently stop notifications. When a form
+                only emails the entry, any failure means lost data and no way to know.
+              </p>
+              <p>
+                A stored copy gives you a source of truth. Even if the notification fails, the submission is waiting in
+                your dashboard.
+              </p>
+            </div>
+          </section>
+          <section id="what-happens-in-popular-plugins" class="mt-12 scroll-mt-24">
+            <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">What happens in popular plugins</h2>
+            <div class="mt-4 space-y-5 text-[18px] leading-[1.75] text-ink-soft">
+              <p>
+                Contact Form 7 emails submissions and does not store them by default, so you would need an additional
+                plugin for a record. WPForms Lite also emails entries; it offers an optional backup to WPForms servers
+                through Lite Connect, and entries can be viewed in WordPress after upgrading. CSV export is a paid
+                feature there.
+              </p>
+              <p>
+                Ninja Forms Core, Formidable Lite, Fluent Forms and Forminator save entries and support CSV export in
+                their free versions. Gravity Forms has no free version. VuloForm stores every submission in your own
+                WordPress database and includes CSV export in the free plugin.
+              </p>
+            </div>
+          </section>
+          <section id="what-a-good-submissions-screen-should-do" class="mt-12 scroll-mt-24">
+            <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">What a good submissions screen should do</h2>
+            <div class="mt-4 space-y-5 text-[18px] leading-[1.75] text-ink-soft">
+              <p>Storing data is the minimum. To actually work from it, look for:</p>
+              <ul class="list-disc space-y-2 pl-6 marker:text-navy">
+                <li>Search, to find a person or a phrase quickly</li>
+                <li>Filters by status and date</li>
+                <li>Statuses such as new, read and spam, so you can see what needs attention</li>
+                <li>CSV export, for spreadsheets, CRMs and reporting</li>
+                <li>A way to delete old entries automatically</li>
+              </ul>
+            </div>
+          </section>
+          <section id="managing-submissions-in-vuloform" class="mt-12 scroll-mt-24">
+            <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">Managing submissions in VuloForm</h2>
+            <div class="mt-4 space-y-5 text-[18px] leading-[1.75] text-ink-soft">
+              <p>
+                VuloForm shows entries inside WordPress. You can search, filter by status and date, and mark each
+                submission as new, read or spam. A spam label helps you clean up without losing the record of what
+                happened.
+              </p>
+              <p>
+                When you need the data elsewhere, export to CSV and open it in a spreadsheet or import it into another
+                tool. If you would rather send each entry to another system as it arrives, webhooks do that
+                automatically.
+              </p>
+            </div>
+          </section>
+          <section id="keep-what-you-need-delete-what-you-don-t" class="mt-12 scroll-mt-24">
+            <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">Keep what you need, delete what you don’t</h2>
+            <div class="mt-4 space-y-5 text-[18px] leading-[1.75] text-ink-soft">
+              <p>
+                Storing everything forever is not always wise. Names, emails and messages are personal data, and holding
+                them longer than necessary creates risk and, in many places, legal obligations.
+              </p>
+              <p>
+                VuloForm lets you set automatic deletion after a number of days. A sensible default for a contact form
+                might be a few months, long enough to follow up, then gone. For job applications or support requests,
+                choose a period that matches your policy.
+              </p>
+            </div>
+          </section>
+          <section id="privacy-and-ownership" class="mt-12 scroll-mt-24">
+            <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">Privacy and ownership</h2>
+            <div class="mt-4 space-y-5 text-[18px] leading-[1.75] text-ink-soft">
+              <p>
+                Where the data is stored matters as much as whether it is. With VuloForm, submissions live on your
+                server and the plugin does not contact outside services by itself. Visitor IP addresses are not stored
+                unless you switch that on, and it works with the WordPress Export Personal Data and Erase Personal Data
+                tools, so handling a data request does not mean hunting through several systems.
+              </p>
+            </div>
+          </section>
+          <section id="a-simple-routine" class="mt-12 scroll-mt-24">
+            <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">A simple routine</h2>
+            <div class="mt-4 space-y-5 text-[18px] leading-[1.75] text-ink-soft">
+              <p>
+                You do not need a complicated process. A routine that works for most small teams is to check new
+                submissions daily, mark them read once handled, label spam so patterns are visible, and export a CSV
+                monthly if you need reporting or a backup in another tool.
+              </p>
+            </div>
+          </section>
+          <section id="questions-people-ask" class="mt-12 scroll-mt-24">
+            <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">Questions people ask</h2>
+            <div class="mt-4 space-y-5 text-[18px] leading-[1.75] text-ink-soft">
+              <p>
+                Will storing entries slow my site down? Not in normal use. Submissions are small records, and even
+                thousands of entries are trivial for a modern database. If volume becomes very large, automatic deletion
+                keeps things lean.
+              </p>
+              <p>
+                What happens to my entries if I deactivate the plugin? With VuloForm, deleting the plugin removes
+                nothing by default, so a reinstall picks up where you left off. If you want everything removed, choose
+                “Delete everything” under VuloForm › Settings before you uninstall.
+              </p>
+              <p>
+                Can I still get email notifications? Yes. Notifications are in addition to storage, not instead of it.
+                You can email your team with placeholders for any answer and send the visitor a confirmation. One
+                caution: a status of “Handed off” means your site’s mail system accepted the message, not that it
+                reached an inbox, so if mail goes missing, check spam folders and consider an SMTP plugin.
+              </p>
+            </div>
+          </section>
+          <div class="mt-12 space-y-5 rounded-[28px] bg-sky-soft p-7 text-[18px] leading-[1.75]">
+            <p>
+              Email is a notification, not a database. If your forms matter to your business, keep a stored copy that
+              you control. VuloForm saves, filters and exports submissions in the free plugin, with no limits on forms
+              or entries.
+            </p>
+          </div>
+          <aside class="mt-12" aria-label="Related comparisons">
+            <h2 class="text-lg font-bold">Related comparisons</h2>
+            <ul class="mt-3 flex flex-wrap gap-2">
+              <li>
+                <a
+                  class="inline-block rounded-full border border-line bg-white px-4 py-2 text-sm font-semibold transition-colors hover:border-navy/30 hover:bg-sky-soft"
+                  href="../../compare/contact-form-7/index.html"
+                  >VuloForm vs
+                  <!-- -->Contact Form 7</a
+                >
+              </li>
+              <li>
+                <a
+                  class="inline-block rounded-full border border-line bg-white px-4 py-2 text-sm font-semibold transition-colors hover:border-navy/30 hover:bg-sky-soft"
+                  href="../../compare/wpforms/index.html"
+                  >VuloForm vs
+                  <!-- -->WPForms</a
+                >
+              </li>
+            </ul>
+          </aside>
+        </article>
+      </div>
+      <section class="mx-auto mt-16 max-w-6xl px-4 sm:px-6">
+        <h2 class="text-2xl font-bold">Keep reading</h2>
+        <ul class="mt-5 grid gap-4 md:grid-cols-3">
+          <li>
+            <a
+              class="block h-full rounded-[24px] border border-line bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lg"
+              href="../../blog/best-free-wordpress-form-plugins/index.html"
+              ><span class="text-xs font-semibold tracking-wide text-[#0f7a53] uppercase">Comparisons</span
+              ><span class="mt-2 block font-bold leading-snug"
+                >The best free WordPress form plugins in 2026 (and what they really include)</span
+              ></a
+            >
+          </li>
+          <li>
+            <a
+              class="block h-full rounded-[24px] border border-line bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lg"
+              href="../../blog/multi-step-form-wordpress/index.html"
+              ><span class="text-xs font-semibold tracking-wide text-[#0f7a53] uppercase">How-to</span
+              ><span class="mt-2 block font-bold leading-snug"
+                >How to create a multi-step form in WordPress (free, no add-ons)</span
+              ></a
+            >
+          </li>
+          <li>
+            <a
+              class="block h-full rounded-[24px] border border-line bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lg"
+              href="../../blog/wordpress-conditional-logic-form/index.html"
+              ><span class="text-xs font-semibold tracking-wide text-[#0f7a53] uppercase">How-to</span
+              ><span class="mt-2 block font-bold leading-snug"
+                >WordPress conditional logic forms: how to show the right fields to the right people</span
+              ></a
+            >
+          </li>
+        </ul>
+      </section>
+      <section class="mx-auto mt-20 max-w-6xl px-4 sm:px-6">
+        <div
+          class="rounded-[32px] bg-gradient-to-br from-sky-soft via-white to-mint-soft px-6 py-14 text-center ring-1 ring-line sm:py-16"
+        >
+          <h2 class="mx-auto max-w-2xl text-3xl leading-tight font-bold tracking-tight sm:text-4xl">
+            Try VuloForm free
+          </h2>
+          <p class="mx-auto mt-4 max-w-lg text-ink-soft">
+            Install from Plugins › Add New, pick a template, hit Publish. No account, no subscription, no limits.
+          </p>
+          <div class="mt-8 flex flex-wrap justify-center gap-3">
+            <a
+              href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform"
+              class="rounded-full bg-navy px-7 py-3.5 font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-navy-light"
+              >Download VuloForm — free</a
+            ><a
+              href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform/docs"
+              class="rounded-full border border-line bg-white px-7 py-3.5 font-semibold transition-colors hover:border-navy/30"
+              >Read the docs</a
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="mx-auto max-w-6xl px-4 pt-10 pb-12 sm:px-6">
+      <div class="rounded-[32px] bg-white p-7 ring-1 ring-line sm:p-10">
+        <div class="grid gap-10 lg:grid-cols-[1.3fr_2fr]">
+          <div class="max-w-xs">
+            <span class="inline-flex items-center gap-2.5"
+              ><img src="../../assets/images/brand-icon.svg" alt="" width="34" height="32" aria-hidden="true" /><span
+                class="display text-xl font-bold tracking-tight text-ink"
+                >Vulo<span class="text-navy">Form</span></span
+              ></span
+            >
+            <p class="mt-4 text-[15px] leading-relaxed text-ink-soft">
+              Build and review forms inside WordPress. Free, no account, no limits.
+            </p>
+            <a
+              href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform"
+              class="mt-6 inline-block rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-navy-light"
+              >Download — free</a
+            >
+          </div>
+          <div class="grid grid-cols-2 gap-8 sm:grid-cols-3">
+            <nav aria-labelledby="footer-product">
+              <h2 id="footer-product" class="text-xs font-bold tracking-wider text-ink uppercase">Product</h2>
+              <ul class="mt-4 space-y-3">
+                <li>
+                  <a class="text-[15px] text-ink-soft transition-colors hover:text-navy" href="../../index.html#builder"
+                    >Builder</a
+                  >
+                </li>
+                <li>
+                  <a class="text-[15px] text-ink-soft transition-colors hover:text-navy" href="../../index.html#logic"
+                    >Logic</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    href="../../index.html#features"
+                    >Features</a
+                  >
+                </li>
+                <li>
+                  <a class="text-[15px] text-ink-soft transition-colors hover:text-navy" href="../../index.html#privacy"
+                    >Privacy</a
+                  >
+                </li>
+                <li>
+                  <a class="text-[15px] text-ink-soft transition-colors hover:text-navy" href="../../index.html#faq"
+                    >FAQ</a
+                  >
+                </li>
+              </ul>
+            </nav>
+            <nav aria-labelledby="footer-resources">
+              <h2 id="footer-resources" class="text-xs font-bold tracking-wider text-ink uppercase">Resources</h2>
+              <ul class="mt-4 space-y-3">
+                <li>
+                  <a class="text-[15px] text-ink-soft transition-colors hover:text-navy" href="../../blog/index.html"
+                    >Blog</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform/docs/user"
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    >User guide</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform/docs/developer"
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    >Developers</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform"
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    >Source code</a
+                  >
+                </li>
+              </ul>
+            </nav>
+            <nav aria-labelledby="footer-compare">
+              <h2 id="footer-compare" class="text-xs font-bold tracking-wider text-ink uppercase">Compare</h2>
+              <ul class="mt-4 space-y-3">
+                <li>
+                  <a class="text-[15px] text-ink-soft transition-colors hover:text-navy" href="../../compare/index.html"
+                    >All comparisons</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    href="../../compare/contact-form-7/index.html"
+                    >vs Contact Form 7</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    href="../../compare/wpforms/index.html"
+                    >vs WPForms</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    href="../../compare/gravity-forms/index.html"
+                    >vs Gravity Forms</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    href="../../compare/ninja-forms/index.html"
+                    >vs Ninja Forms</a
+                  >
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <section aria-labelledby="more-from-vulolabs" class="mt-12 border-t border-line pt-8">
+          <h2 id="more-from-vulolabs" class="text-xs font-bold tracking-wider text-ink uppercase">
+            More from VuloLabs
+          </h2>
+          <ul class="mt-5 grid gap-3 md:grid-cols-3">
+            <li>
+              <a
+                href="https://www.vulolabs.com"
+                target="_blank"
+                rel="noopener"
+                class="group block h-full rounded-2xl bg-cream p-5 transition-all hover:-translate-y-0.5 hover:bg-sky-soft"
+                ><span class="flex items-center justify-between text-lg font-bold text-ink"
+                  >VuloLabs<span
+                    aria-hidden="true"
+                    class="text-navy transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    >↗</span
+                  ></span
+                ><span class="mt-1 block text-[15px] leading-snug text-ink-soft"
+                  >Product engineering for modern business</span
+                ><span class="sr-only"> (opens in a new tab)</span></a
+              >
+            </li>
+            <li>
+              <a
+                href="https://vulopilot.com"
+                target="_blank"
+                rel="noopener"
+                class="group block h-full rounded-2xl bg-cream p-5 transition-all hover:-translate-y-0.5 hover:bg-sky-soft"
+                ><span class="flex items-center justify-between text-lg font-bold text-ink"
+                  >VuloPilot<span
+                    aria-hidden="true"
+                    class="text-navy transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    >↗</span
+                  ></span
+                ><span class="mt-1 block text-[15px] leading-snug text-ink-soft"
+                  >The WordPress growth operating system</span
+                ><span class="sr-only"> (opens in a new tab)</span></a
+              >
+            </li>
+            <li>
+              <a
+                href="https://vuloform.com"
+                target="_blank"
+                rel="noopener"
+                class="group block h-full rounded-2xl bg-cream p-5 transition-all hover:-translate-y-0.5 hover:bg-sky-soft"
+                ><span class="flex items-center justify-between text-lg font-bold text-ink"
+                  >VuloForm<span
+                    aria-hidden="true"
+                    class="text-navy transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    >↗</span
+                  ></span
+                ><span class="mt-1 block text-[15px] leading-snug text-ink-soft"
+                  >Build and review forms inside WordPress</span
+                ><span class="sr-only"> (opens in a new tab)</span></a
+              >
+            </li>
+          </ul>
+        </section>
+        <div
+          class="mt-8 flex flex-col items-center justify-between gap-2 border-t border-line pt-6 text-sm text-ink-soft sm:flex-row"
+        >
+          <p>© 2026 VuloLabs. All rights reserved.</p>
+          <p class="flex items-center gap-2">
+            <span aria-hidden="true" class="h-2 w-2 rounded-full bg-mint"></span>Free and open source
+          </p>
+        </div>
+      </div>
+    </footer>
+    <script src="../../assets/js/jquery.min.js"></script>
+    <script src="../../assets/js/lenis.min.js"></script>
+    <script src="../../assets/js/main.js"></script>
+  </body>
+</html>

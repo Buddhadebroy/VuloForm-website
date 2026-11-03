@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# VuloForm website (HTML, CSS and jQuery)
 
-## Getting Started
+The VuloForm marketing site as plain static files. There's no build step and no framework.
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+index.html                 home page
+compare/index.html         comparison overview
+compare/<plugin>/index.html  one page per plugin
+blog/index.html            blog list
+blog/<post>/index.html     one page per post
+assets/css/style.css       all styles (Tailwind output, plus the animation helpers at the end)
+assets/js/main.js          all interactions, written in jQuery
+assets/js/jquery.min.js    jQuery 3.7.1
+assets/js/lenis.min.js     smooth scrolling (same as the original site)
+assets/fonts/              Nunito font files
+assets/images/             logo and icons
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## See it on your computer
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Download the repo (**Code › Download ZIP**), unzip it, and double-click `index.html`. Every link works offline.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## See it online
 
-## Learn More
+GitHub Pages serves it straight from `main` at https://buddhadebroy.github.io/VuloForm-website/
 
-To learn more about Next.js, take a look at the following resources:
+## Editing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Text:** open the page's `index.html` in any editor and change the words.
+- **Colours:** at the top of `assets/css/style.css`, under `:root` (`--navy`, `--mint`, `--ink`, ...).
+- **Interactions:** `assets/js/main.js`. Elements are found by `data-*` attributes. For example, FAQ items use `data-faq-q`, tabs use `data-tab` and `data-panel`, and the scroll-driven builder demo uses `data-steps` / `data-show`.
+- Elements with `data-on` / `data-off` switch between those two sets of classes when their state changes.

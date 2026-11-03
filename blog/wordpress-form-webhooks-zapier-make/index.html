@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="en" class="FLPYxG_variable antialiased">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WordPress form webhooks: send submissions to Zapier, Make or your CRM</title>
+    <meta
+      name="description"
+      content="What webhooks are, how to send WordPress form submissions to Zapier, Make or your own endpoint, and how to handle retries and failures reliably."
+    />
+    <link rel="canonical" href="https://vuloform.com/blog/wordpress-form-webhooks-zapier-make/" />
+    <meta property="og:title" content="WordPress form webhooks: send submissions to Zapier, Make or your CRM" />
+    <meta
+      property="og:description"
+      content="What webhooks are, how to send WordPress form submissions to Zapier, Make or your own endpoint, and how to handle retries and failures reliably."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2026-10-10" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="WordPress form webhooks: send submissions to Zapier, Make or your CRM" />
+    <meta
+      name="twitter:description"
+      content="What webhooks are, how to send WordPress form submissions to Zapier, Make or your own endpoint, and how to handle retries and failures reliably."
+    />
+    <link rel="icon" href="../../assets/images/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="../../assets/css/style.css" />
+  </head>
+  <body class="grain min-h-full">
+    <header
+      class="intro fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4"
+      style="opacity: 0; transform: translateY(-40px); --dur: 0.7s"
+    >
+      <nav
+        id="site-nav"
+        data-on="border-line/80 bg-white/75 shadow-[0_10px_40px_-20px_rgba(13,26,69,0.35)] backdrop-blur-xl"
+        data-off="border-transparent"
+        class="flex w-full max-w-6xl items-center justify-between rounded-full border border-transparent px-4 py-2.5 transition-all duration-500 sm:px-5"
+      >
+        <a aria-label="VuloForm home" href="../../index.html"
+          ><span class="inline-flex items-center gap-2.5"
+            ><img src="../../assets/images/brand-icon.svg" alt="" width="34" height="32" aria-hidden="true" /><span
+              class="display text-xl font-bold tracking-tight text-ink"
+              >Vulo<span class="text-navy">Form</span></span
+            ></span
+          ></a
+        >
+        <ul class="hidden items-center gap-1 md:flex">
+          <li>
+            <a
+              class="rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-sky-soft hover:text-navy"
+              href="../../index.html#builder"
+              >Builder</a
+            >
+          </li>
+          <li>
+            <a
+              class="rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-sky-soft hover:text-navy"
+              href="../../index.html#logic"
+              >Logic</a
+            >
+          </li>
+          <li>
+            <a
+              class="rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-sky-soft hover:text-navy"
+              href="../../index.html#features"
+              >Features</a
+            >
+          </li>
+          <li>
+            <a
+              class="rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-sky-soft hover:text-navy"
+              href="../../compare/index.html"
+              >Compare</a
+            >
+          </li>
+          <li>
+            <a
+              class="rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-sky-soft hover:text-navy"
+              href="../../blog/index.html"
+              >Blog</a
+            >
+          </li>
+          <li>
+            <a
+              class="rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-sky-soft hover:text-navy"
+              href="../../index.html#faq"
+              >FAQ</a
+            >
+          </li>
+        </ul>
+        <div class="flex items-center gap-2">
+          <a
+            href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform"
+            class="hidden rounded-full bg-navy px-5 py-2.5 hover:bg-navy-light text-sm font-semibold text-white transition-all hover:-translate-y-0.5 active:translate-y-0 sm:inline-block"
+            >Get it free</a
+          ><button
+            id="menu-toggle"
+            class="grid h-10 w-10 place-items-center rounded-full bg-white/80 md:hidden"
+            aria-label="Menu"
+            aria-expanded="false"
+          >
+            <span class="relative block h-3 w-5"
+              ><span
+                data-on="top-1.5 rotate-45"
+                data-off="top-0"
+                class="absolute left-0 top-0 h-0.5 w-5 bg-ink transition-all"
+              ></span
+              ><span
+                data-on="top-1.5 -rotate-45"
+                data-off="top-3"
+                class="absolute left-0 top-3 h-0.5 w-5 bg-ink transition-all"
+              ></span
+            ></span>
+          </button>
+        </div>
+      </nav>
+      <ul
+        id="mobile-menu"
+        hidden=""
+        class="pop-in absolute top-20 right-4 left-4 rounded-3xl border border-line bg-white p-3 shadow-xl md:hidden"
+      >
+        <li>
+          <a class="block rounded-2xl px-4 py-3 font-medium hover:bg-sky-soft" href="../../index.html#builder"
+            >Builder</a
+          >
+        </li>
+        <li>
+          <a class="block rounded-2xl px-4 py-3 font-medium hover:bg-sky-soft" href="../../index.html#logic">Logic</a>
+        </li>
+        <li>
+          <a class="block rounded-2xl px-4 py-3 font-medium hover:bg-sky-soft" href="../../index.html#features"
+            >Features</a
+          >
+        </li>
+        <li>
+          <a class="block rounded-2xl px-4 py-3 font-medium hover:bg-sky-soft" href="../../compare/index.html"
+            >Compare</a
+          >
+        </li>
+        <li>
+          <a class="block rounded-2xl px-4 py-3 font-medium hover:bg-sky-soft" href="../../blog/index.html">Blog</a>
+        </li>
+        <li>
+          <a class="block rounded-2xl px-4 py-3 font-medium hover:bg-sky-soft" href="../../index.html#faq">FAQ</a>
+        </li>
+        <li>
+          <a
+            href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform"
+            class="mt-1 block rounded-2xl bg-navy px-4 py-3 text-center font-semibold text-white"
+            >Get it free</a
+          >
+        </li>
+      </ul>
+    </header>
+    <main class="pt-28 sm:pt-36">
+      <div class="mx-auto max-w-6xl gap-12 px-4 sm:px-6 lg:grid lg:grid-cols-[14rem_minmax(0,1fr)]">
+        <div class="hidden lg:col-start-1 lg:row-start-1 lg:block lg:pt-1">
+          <nav
+            aria-label="Table of contents"
+            class="sticky top-28 hidden max-h-[calc(100vh-8rem)] overflow-y-auto lg:block"
+          >
+            <p class="mb-3 text-xs font-bold tracking-wide text-ink-soft uppercase">On this page</p>
+            <ol data-toc="true" class="space-y-1 border-l border-line">
+              <li>
+                <a
+                  href="#what-a-webhook-is"
+                  aria-current="location"
+                  data-on="border-navy font-bold text-navy"
+                  data-off="border-transparent text-ink-soft hover:text-ink"
+                  class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-navy font-bold text-navy"
+                  >What a webhook is</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#webhooks-versus-built-in-integrations"
+                  data-on="border-navy font-bold text-navy"
+                  data-off="border-transparent text-ink-soft hover:text-ink"
+                  class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                  >Webhooks versus built-in integrations</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#setting-up-a-webhook-in-four-steps"
+                  data-on="border-navy font-bold text-navy"
+                  data-off="border-transparent text-ink-soft hover:text-ink"
+                  class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                  >Setting up a webhook in four steps</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#what-makes-a-webhook-reliable"
+                  data-on="border-navy font-bold text-navy"
+                  data-off="border-transparent text-ink-soft hover:text-ink"
+                  class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                  >What makes a webhook reliable</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#verify-what-you-receive"
+                  data-on="border-navy font-bold text-navy"
+                  data-off="border-transparent text-ink-soft hover:text-ink"
+                  class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                  >Verify what you receive</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#privacy-considerations"
+                  data-on="border-navy font-bold text-navy"
+                  data-off="border-transparent text-ink-soft hover:text-ink"
+                  class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                  >Privacy considerations</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#troubleshooting"
+                  data-on="border-navy font-bold text-navy"
+                  data-off="border-transparent text-ink-soft hover:text-ink"
+                  class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                  >Troubleshooting</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#example-workflows"
+                  data-on="border-navy font-bold text-navy"
+                  data-off="border-transparent text-ink-soft hover:text-ink"
+                  class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                  >Example workflows</a
+                >
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <article class="min-w-0 max-w-3xl lg:col-start-2 lg:row-start-1">
+          <nav aria-label="Breadcrumb" class="text-sm text-ink-soft">
+            <a class="hover:text-ink" href="../../blog/index.html">Blog</a> <span aria-hidden="true">/</span>
+            <!-- -->Integrations
+          </nav>
+          <h1 class="mt-5 text-4xl leading-tight font-bold tracking-tight sm:text-5xl">
+            WordPress form webhooks: send submissions to Zapier, Make or your CRM
+          </h1>
+          <p class="mt-5 text-sm text-ink-soft">
+            By the VuloForm team ·
+            <!-- -->10 October 2026<!-- -->
+            ·
+            <!-- -->4<!-- -->
+            min read
+          </p>
+          <details class="mt-8 rounded-2xl border border-line bg-white px-5 py-3 lg:hidden">
+            <summary class="cursor-pointer text-sm font-bold">Table of contents</summary>
+            <nav aria-label="Table of contents" class="mt-3">
+              <ol data-toc="true" class="space-y-1 border-l border-line">
+                <li>
+                  <a
+                    href="#what-a-webhook-is"
+                    aria-current="location"
+                    data-on="border-navy font-bold text-navy"
+                    data-off="border-transparent text-ink-soft hover:text-ink"
+                    class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-navy font-bold text-navy"
+                    >What a webhook is</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#webhooks-versus-built-in-integrations"
+                    data-on="border-navy font-bold text-navy"
+                    data-off="border-transparent text-ink-soft hover:text-ink"
+                    class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                    >Webhooks versus built-in integrations</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#setting-up-a-webhook-in-four-steps"
+                    data-on="border-navy font-bold text-navy"
+                    data-off="border-transparent text-ink-soft hover:text-ink"
+                    class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                    >Setting up a webhook in four steps</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#what-makes-a-webhook-reliable"
+                    data-on="border-navy font-bold text-navy"
+                    data-off="border-transparent text-ink-soft hover:text-ink"
+                    class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                    >What makes a webhook reliable</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#verify-what-you-receive"
+                    data-on="border-navy font-bold text-navy"
+                    data-off="border-transparent text-ink-soft hover:text-ink"
+                    class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                    >Verify what you receive</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#privacy-considerations"
+                    data-on="border-navy font-bold text-navy"
+                    data-off="border-transparent text-ink-soft hover:text-ink"
+                    class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                    >Privacy considerations</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#troubleshooting"
+                    data-on="border-navy font-bold text-navy"
+                    data-off="border-transparent text-ink-soft hover:text-ink"
+                    class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                    >Troubleshooting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#example-workflows"
+                    data-on="border-navy font-bold text-navy"
+                    data-off="border-transparent text-ink-soft hover:text-ink"
+                    class="-ml-px block border-l-2 py-1.5 pr-2 pl-4 text-sm leading-snug transition-colors border-transparent text-ink-soft hover:text-ink"
+                    >Example workflows</a
+                  >
+                </li>
+              </ol>
+            </nav>
+          </details>
+          <div class="mt-10 space-y-5 text-[18px] leading-[1.75] text-ink">
+            <p>
+              A form is rarely the end of the story. A lead should reach your CRM, a signup should land in a
+              spreadsheet, a support request should open a ticket. Webhooks are the simplest, most universal way to make
+              that happen: when a form is submitted, your site sends the data to a web address you choose.
+            </p>
+            <p>
+              This guide explains what webhooks are, how to connect them to tools like Zapier and Make, and what
+              separates a reliable setup from a fragile one.
+            </p>
+          </div>
+          <section id="what-a-webhook-is" class="mt-12 scroll-mt-24">
+            <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">What a webhook is</h2>
+            <div class="mt-4 space-y-5 text-[18px] leading-[1.75] text-ink-soft">
+              <p>
+                A webhook is an automatic message from one system to another. Instead of you checking for new
+                submissions, the form tells another service as soon as one arrives. Technically it is an HTTP request,
+                usually sending the entry as JSON, to a URL that the receiving service gave you.
+              </p>
+              <p>
+                Automation platforms such as Zapier and Make let you create a “catch hook” address. You paste it into
+                your form, submit a test entry, and then map the data to whatever comes next: add a row to a sheet,
+                create a contact, post a message.
+              </p>
+            </div>
+          </section>
+          <section id="webhooks-versus-built-in-integrations" class="mt-12 scroll-mt-24">
+            <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">Webhooks versus built-in integrations</h2>
+            <div class="mt-4 space-y-5 text-[18px] leading-[1.75] text-ink-soft">
+              <p>
+                Many plugins sell direct integrations for CRMs and email tools. Those can be convenient, but they
+                usually sit on paid plans, and each one covers only the tools the vendor has built.
+              </p>
+              <p>
+                Webhooks are more general. Any service that can receive an HTTP request can be connected. In our October
+                2026 check, webhooks were on the Elite plan for WPForms and Gravity Forms, an Elite-included add-on for
+                Ninja Forms, Business via the API add-on for Formidable, and Pro for Fluent Forms. Contact Form 7 does
+                not have them built in. Forminator and VuloForm include webhooks in the free plugin.
+              </p>
+            </div>
+          </section>
+          <section id="setting-up-a-webhook-in-four-steps" class="mt-12 scroll-mt-24">
+            <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">Setting up a webhook in four steps</h2>
+            <div class="mt-4 space-y-5 text-[18px] leading-[1.75] text-ink-soft">
+              <p>The process is the same for most tools:</p>
+              <ul class="list-disc space-y-2 pl-6 marker:text-navy">
+                <li>Create a catch hook (Zapier) or webhook module (Make) and copy its URL</li>
+                <li>Paste the URL into your form’s webhook settings and, if offered, add a secret</li>
+                <li>Submit a test entry so the platform can see the data’s shape</li>
+                <li>Map the fields to your next step, then switch the automation on</li>
+              </ul>
+            </div>
+          </section>
+          <section id="what-makes-a-webhook-reliable" class="mt-12 scroll-mt-24">
+            <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">What makes a webhook reliable</h2>
+            <div class="mt-4 space-y-5 text-[18px] leading-[1.75] text-ink-soft">
+              <p>
+                A webhook that works on a good day is not enough. Receiving services go down, networks time out and
+                endpoints return errors. A dependable setup handles those moments.
+              </p>
+              <p>
+                In VuloForm, each submission is sent as JSON over HTTPS with background delivery, so a slow endpoint
+                does not hold up the visitor. If the first attempt fails, it retries twice more, and every attempt is
+                logged, so you can see, for instance, a 500 error followed by a successful 200. You can also add an
+                optional secret, which lets the receiving side verify the request came from your site.
+              </p>
+            </div>
+          </section>
+          <section id="verify-what-you-receive" class="mt-12 scroll-mt-24">
+            <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">Verify what you receive</h2>
+            <div class="mt-4 space-y-5 text-[18px] leading-[1.75] text-ink-soft">
+              <p>
+                If you build your own endpoint, do not trust every request that arrives. Check the secret, validate the
+                fields you expect and ignore anything else. Respond quickly with a success status, and do any heavy
+                processing afterwards so that the sender does not time out and retry unnecessarily.
+              </p>
+              <p>
+                Also make the receiving side idempotent where possible. Because retries exist, the same entry could
+                occasionally arrive twice, and your system should not create duplicate records when it does.
+              </p>
+            </div>
+          </section>
+          <section id="privacy-considerations" class="mt-12 scroll-mt-24">
+            <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">Privacy considerations</h2>
+            <div class="mt-4 space-y-5 text-[18px] leading-[1.75] text-ink-soft">
+              <p>
+                A webhook sends personal data to another company. Make sure that service is covered in your privacy
+                policy, and only send the fields that the destination actually needs. With VuloForm, data leaves your
+                server only when you configure a webhook or notification; the plugin makes no external connections on
+                its own.
+              </p>
+            </div>
+          </section>
+          <section id="troubleshooting" class="mt-12 scroll-mt-24">
+            <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">Troubleshooting</h2>
+            <div class="mt-4 space-y-5 text-[18px] leading-[1.75] text-ink-soft">
+              <p>If data is not arriving, work through these in order:</p>
+              <ul class="list-disc space-y-2 pl-6 marker:text-navy">
+                <li>Check the delivery log for the status code returned</li>
+                <li>Confirm the URL is exactly as the platform gave it, with no spaces</li>
+                <li>Make sure your site can make outgoing HTTPS requests</li>
+                <li>Re-send a test entry after changing settings</li>
+                <li>Check the automation is switched on and not paused</li>
+              </ul>
+            </div>
+          </section>
+          <section id="example-workflows" class="mt-12 scroll-mt-24">
+            <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">Example workflows</h2>
+            <div class="mt-4 space-y-5 text-[18px] leading-[1.75] text-ink-soft">
+              <p>
+                A few automations that small teams set up in an afternoon: send each new lead to a CRM and notify a
+                sales channel; add job applicants to a spreadsheet and email a hiring manager; create a task in a
+                project tool for every support request; or add newsletter signups to a mailing list once they have given
+                consent.
+              </p>
+            </div>
+          </section>
+          <div class="mt-12 space-y-5 rounded-[28px] bg-sky-soft p-7 text-[18px] leading-[1.75]">
+            <p>
+              Keep a simple record of which forms send data where. When a destination changes, a tool is cancelled or an
+              employee leaves, you will know exactly which webhooks to update, rather than discovering a broken
+              automation weeks later.
+            </p>
+            <p>
+              Webhooks turn a form into the front door of your whole workflow. VuloForm includes signed, retried and
+              logged webhooks in the free plugin, so you can connect Zapier, Make or your own system without paying for
+              a higher plan.
+            </p>
+          </div>
+          <aside class="mt-12" aria-label="Related comparisons">
+            <h2 class="text-lg font-bold">Related comparisons</h2>
+            <ul class="mt-3 flex flex-wrap gap-2">
+              <li>
+                <a
+                  class="inline-block rounded-full border border-line bg-white px-4 py-2 text-sm font-semibold transition-colors hover:border-navy/30 hover:bg-sky-soft"
+                  href="../../compare/wpforms/index.html"
+                  >VuloForm vs
+                  <!-- -->WPForms</a
+                >
+              </li>
+              <li>
+                <a
+                  class="inline-block rounded-full border border-line bg-white px-4 py-2 text-sm font-semibold transition-colors hover:border-navy/30 hover:bg-sky-soft"
+                  href="../../compare/gravity-forms/index.html"
+                  >VuloForm vs
+                  <!-- -->Gravity Forms</a
+                >
+              </li>
+              <li>
+                <a
+                  class="inline-block rounded-full border border-line bg-white px-4 py-2 text-sm font-semibold transition-colors hover:border-navy/30 hover:bg-sky-soft"
+                  href="../../compare/formidable-forms/index.html"
+                  >VuloForm vs
+                  <!-- -->Formidable Forms</a
+                >
+              </li>
+            </ul>
+          </aside>
+        </article>
+      </div>
+      <section class="mx-auto mt-16 max-w-6xl px-4 sm:px-6">
+        <h2 class="text-2xl font-bold">Keep reading</h2>
+        <ul class="mt-5 grid gap-4 md:grid-cols-3">
+          <li>
+            <a
+              class="block h-full rounded-[24px] border border-line bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lg"
+              href="../../blog/best-free-wordpress-form-plugins/index.html"
+              ><span class="text-xs font-semibold tracking-wide text-[#0f7a53] uppercase">Comparisons</span
+              ><span class="mt-2 block font-bold leading-snug"
+                >The best free WordPress form plugins in 2026 (and what they really include)</span
+              ></a
+            >
+          </li>
+          <li>
+            <a
+              class="block h-full rounded-[24px] border border-line bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lg"
+              href="../../blog/multi-step-form-wordpress/index.html"
+              ><span class="text-xs font-semibold tracking-wide text-[#0f7a53] uppercase">How-to</span
+              ><span class="mt-2 block font-bold leading-snug"
+                >How to create a multi-step form in WordPress (free, no add-ons)</span
+              ></a
+            >
+          </li>
+          <li>
+            <a
+              class="block h-full rounded-[24px] border border-line bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lg"
+              href="../../blog/wordpress-conditional-logic-form/index.html"
+              ><span class="text-xs font-semibold tracking-wide text-[#0f7a53] uppercase">How-to</span
+              ><span class="mt-2 block font-bold leading-snug"
+                >WordPress conditional logic forms: how to show the right fields to the right people</span
+              ></a
+            >
+          </li>
+        </ul>
+      </section>
+      <section class="mx-auto mt-20 max-w-6xl px-4 sm:px-6">
+        <div
+          class="rounded-[32px] bg-gradient-to-br from-sky-soft via-white to-mint-soft px-6 py-14 text-center ring-1 ring-line sm:py-16"
+        >
+          <h2 class="mx-auto max-w-2xl text-3xl leading-tight font-bold tracking-tight sm:text-4xl">
+            Try VuloForm free
+          </h2>
+          <p class="mx-auto mt-4 max-w-lg text-ink-soft">
+            Install from Plugins › Add New, pick a template, hit Publish. No account, no subscription, no limits.
+          </p>
+          <div class="mt-8 flex flex-wrap justify-center gap-3">
+            <a
+              href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform"
+              class="rounded-full bg-navy px-7 py-3.5 font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-navy-light"
+              >Download VuloForm — free</a
+            ><a
+              href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform/docs"
+              class="rounded-full border border-line bg-white px-7 py-3.5 font-semibold transition-colors hover:border-navy/30"
+              >Read the docs</a
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="mx-auto max-w-6xl px-4 pt-10 pb-12 sm:px-6">
+      <div class="rounded-[32px] bg-white p-7 ring-1 ring-line sm:p-10">
+        <div class="grid gap-10 lg:grid-cols-[1.3fr_2fr]">
+          <div class="max-w-xs">
+            <span class="inline-flex items-center gap-2.5"
+              ><img src="../../assets/images/brand-icon.svg" alt="" width="34" height="32" aria-hidden="true" /><span
+                class="display text-xl font-bold tracking-tight text-ink"
+                >Vulo<span class="text-navy">Form</span></span
+              ></span
+            >
+            <p class="mt-4 text-[15px] leading-relaxed text-ink-soft">
+              Build and review forms inside WordPress. Free, no account, no limits.
+            </p>
+            <a
+              href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform"
+              class="mt-6 inline-block rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-navy-light"
+              >Download — free</a
+            >
+          </div>
+          <div class="grid grid-cols-2 gap-8 sm:grid-cols-3">
+            <nav aria-labelledby="footer-product">
+              <h2 id="footer-product" class="text-xs font-bold tracking-wider text-ink uppercase">Product</h2>
+              <ul class="mt-4 space-y-3">
+                <li>
+                  <a class="text-[15px] text-ink-soft transition-colors hover:text-navy" href="../../index.html#builder"
+                    >Builder</a
+                  >
+                </li>
+                <li>
+                  <a class="text-[15px] text-ink-soft transition-colors hover:text-navy" href="../../index.html#logic"
+                    >Logic</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    href="../../index.html#features"
+                    >Features</a
+                  >
+                </li>
+                <li>
+                  <a class="text-[15px] text-ink-soft transition-colors hover:text-navy" href="../../index.html#privacy"
+                    >Privacy</a
+                  >
+                </li>
+                <li>
+                  <a class="text-[15px] text-ink-soft transition-colors hover:text-navy" href="../../index.html#faq"
+                    >FAQ</a
+                  >
+                </li>
+              </ul>
+            </nav>
+            <nav aria-labelledby="footer-resources">
+              <h2 id="footer-resources" class="text-xs font-bold tracking-wider text-ink uppercase">Resources</h2>
+              <ul class="mt-4 space-y-3">
+                <li>
+                  <a class="text-[15px] text-ink-soft transition-colors hover:text-navy" href="../../blog/index.html"
+                    >Blog</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform/docs/user"
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    >User guide</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform/docs/developer"
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    >Developers</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform"
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    >Source code</a
+                  >
+                </li>
+              </ul>
+            </nav>
+            <nav aria-labelledby="footer-compare">
+              <h2 id="footer-compare" class="text-xs font-bold tracking-wider text-ink uppercase">Compare</h2>
+              <ul class="mt-4 space-y-3">
+                <li>
+                  <a class="text-[15px] text-ink-soft transition-colors hover:text-navy" href="../../compare/index.html"
+                    >All comparisons</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    href="../../compare/contact-form-7/index.html"
+                    >vs Contact Form 7</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    href="../../compare/wpforms/index.html"
+                    >vs WPForms</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    href="../../compare/gravity-forms/index.html"
+                    >vs Gravity Forms</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    href="../../compare/ninja-forms/index.html"
+                    >vs Ninja Forms</a
+                  >
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <section aria-labelledby="more-from-vulolabs" class="mt-12 border-t border-line pt-8">
+          <h2 id="more-from-vulolabs" class="text-xs font-bold tracking-wider text-ink uppercase">
+            More from VuloLabs
+          </h2>
+          <ul class="mt-5 grid gap-3 md:grid-cols-3">
+            <li>
+              <a
+                href="https://www.vulolabs.com"
+                target="_blank"
+                rel="noopener"
+                class="group block h-full rounded-2xl bg-cream p-5 transition-all hover:-translate-y-0.5 hover:bg-sky-soft"
+                ><span class="flex items-center justify-between text-lg font-bold text-ink"
+                  >VuloLabs<span
+                    aria-hidden="true"
+                    class="text-navy transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    >↗</span
+                  ></span
+                ><span class="mt-1 block text-[15px] leading-snug text-ink-soft"
+                  >Product engineering for modern business</span
+                ><span class="sr-only"> (opens in a new tab)</span></a
+              >
+            </li>
+            <li>
+              <a
+                href="https://vulopilot.com"
+                target="_blank"
+                rel="noopener"
+                class="group block h-full rounded-2xl bg-cream p-5 transition-all hover:-translate-y-0.5 hover:bg-sky-soft"
+                ><span class="flex items-center justify-between text-lg font-bold text-ink"
+                  >VuloPilot<span
+                    aria-hidden="true"
+                    class="text-navy transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    >↗</span
+                  ></span
+                ><span class="mt-1 block text-[15px] leading-snug text-ink-soft"
+                  >The WordPress growth operating system</span
+                ><span class="sr-only"> (opens in a new tab)</span></a
+              >
+            </li>
+            <li>
+              <a
+                href="https://vuloform.com"
+                target="_blank"
+                rel="noopener"
+                class="group block h-full rounded-2xl bg-cream p-5 transition-all hover:-translate-y-0.5 hover:bg-sky-soft"
+                ><span class="flex items-center justify-between text-lg font-bold text-ink"
+                  >VuloForm<span
+                    aria-hidden="true"
+                    class="text-navy transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    >↗</span
+                  ></span
+                ><span class="mt-1 block text-[15px] leading-snug text-ink-soft"
+                  >Build and review forms inside WordPress</span
+                ><span class="sr-only"> (opens in a new tab)</span></a
+              >
+            </li>
+          </ul>
+        </section>
+        <div
+          class="mt-8 flex flex-col items-center justify-between gap-2 border-t border-line pt-6 text-sm text-ink-soft sm:flex-row"
+        >
+          <p>© 2026 VuloLabs. All rights reserved.</p>
+          <p class="flex items-center gap-2">
+            <span aria-hidden="true" class="h-2 w-2 rounded-full bg-mint"></span>Free and open source
+          </p>
+        </div>
+      </div>
+    </footer>
+    <script src="../../assets/js/jquery.min.js"></script>
+    <script src="../../assets/js/lenis.min.js"></script>
+    <script src="../../assets/js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="en" class="FLPYxG_variable antialiased">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The VuloForm blog — WordPress form guides and comparisons</title>
+    <meta
+      name="description"
+      content="Practical guides on WordPress forms: multi-step forms, conditional logic, saving submissions, spam protection, privacy, webhooks and plugin comparisons."
+    />
+    <link rel="canonical" href="https://vuloform.com/blog/" />
+    <link rel="icon" href="../assets/images/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+  </head>
+  <body class="grain min-h-full">
+    <header
+      class="intro fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4"
+      style="opacity: 0; transform: translateY(-40px); --dur: 0.7s"
+    >
+      <nav
+        id="site-nav"
+        data-on="border-line/80 bg-white/75 shadow-[0_10px_40px_-20px_rgba(13,26,69,0.35)] backdrop-blur-xl"
+        data-off="border-transparent"
+        class="flex w-full max-w-6xl items-center justify-between rounded-full border border-transparent px-4 py-2.5 transition-all duration-500 sm:px-5"
+      >
+        <a aria-label="VuloForm home" href="../index.html"
+          ><span class="inline-flex items-center gap-2.5"
+            ><img src="../assets/images/brand-icon.svg" alt="" width="34" height="32" aria-hidden="true" /><span
+              class="display text-xl font-bold tracking-tight text-ink"
+              >Vulo<span class="text-navy">Form</span></span
+            ></span
+          ></a
+        >
+        <ul class="hidden items-center gap-1 md:flex">
+          <li>
+            <a
+              class="rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-sky-soft hover:text-navy"
+              href="../index.html#builder"
+              >Builder</a
+            >
+          </li>
+          <li>
+            <a
+              class="rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-sky-soft hover:text-navy"
+              href="../index.html#logic"
+              >Logic</a
+            >
+          </li>
+          <li>
+            <a
+              class="rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-sky-soft hover:text-navy"
+              href="../index.html#features"
+              >Features</a
+            >
+          </li>
+          <li>
+            <a
+              class="rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-sky-soft hover:text-navy"
+              href="../compare/index.html"
+              >Compare</a
+            >
+          </li>
+          <li>
+            <a
+              class="rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-sky-soft hover:text-navy"
+              href="../blog/index.html"
+              >Blog</a
+            >
+          </li>
+          <li>
+            <a
+              class="rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-sky-soft hover:text-navy"
+              href="../index.html#faq"
+              >FAQ</a
+            >
+          </li>
+        </ul>
+        <div class="flex items-center gap-2">
+          <a
+            href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform"
+            class="hidden rounded-full bg-navy px-5 py-2.5 hover:bg-navy-light text-sm font-semibold text-white transition-all hover:-translate-y-0.5 active:translate-y-0 sm:inline-block"
+            >Get it free</a
+          ><button
+            id="menu-toggle"
+            class="grid h-10 w-10 place-items-center rounded-full bg-white/80 md:hidden"
+            aria-label="Menu"
+            aria-expanded="false"
+          >
+            <span class="relative block h-3 w-5"
+              ><span
+                data-on="top-1.5 rotate-45"
+                data-off="top-0"
+                class="absolute left-0 top-0 h-0.5 w-5 bg-ink transition-all"
+              ></span
+              ><span
+                data-on="top-1.5 -rotate-45"
+                data-off="top-3"
+                class="absolute left-0 top-3 h-0.5 w-5 bg-ink transition-all"
+              ></span
+            ></span>
+          </button>
+        </div>
+      </nav>
+      <ul
+        id="mobile-menu"
+        hidden=""
+        class="pop-in absolute top-20 right-4 left-4 rounded-3xl border border-line bg-white p-3 shadow-xl md:hidden"
+      >
+        <li>
+          <a class="block rounded-2xl px-4 py-3 font-medium hover:bg-sky-soft" href="../index.html#builder">Builder</a>
+        </li>
+        <li>
+          <a class="block rounded-2xl px-4 py-3 font-medium hover:bg-sky-soft" href="../index.html#logic">Logic</a>
+        </li>
+        <li>
+          <a class="block rounded-2xl px-4 py-3 font-medium hover:bg-sky-soft" href="../index.html#features"
+            >Features</a
+          >
+        </li>
+        <li>
+          <a class="block rounded-2xl px-4 py-3 font-medium hover:bg-sky-soft" href="../compare/index.html">Compare</a>
+        </li>
+        <li><a class="block rounded-2xl px-4 py-3 font-medium hover:bg-sky-soft" href="../blog/index.html">Blog</a></li>
+        <li><a class="block rounded-2xl px-4 py-3 font-medium hover:bg-sky-soft" href="../index.html#faq">FAQ</a></li>
+        <li>
+          <a
+            href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform"
+            class="mt-1 block rounded-2xl bg-navy px-4 py-3 text-center font-semibold text-white"
+            >Get it free</a
+          >
+        </li>
+      </ul>
+    </header>
+    <main class="pt-28 sm:pt-36">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6">
+        <div class="max-w-3xl">
+          <span
+            class="inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold tracking-wide uppercase border-mint/30 bg-mint-soft text-[#0f7a53]"
+            ><span class="h-1.5 w-1.5 rounded-full bg-mint"></span>Blog</span
+          >
+          <h1 class="mt-5 text-4xl leading-tight font-bold tracking-tight sm:text-5xl">
+            WordPress forms, <span class="text-navy">explained.</span>
+          </h1>
+          <p class="mt-5 text-lg text-ink-soft">
+            Practical guides and honest comparisons for anyone building forms in WordPress.
+          </p>
+        </div>
+        <a
+          class="group mt-12 block rounded-[32px] bg-gradient-to-br from-sky-soft via-white to-mint-soft p-8 ring-1 ring-line transition-all hover:-translate-y-0.5 hover:shadow-xl sm:p-12"
+          href="../blog/best-free-wordpress-form-plugins/index.html"
+          ><span class="text-xs font-semibold tracking-wide text-navy uppercase"
+            >Latest ·
+            <!-- -->Comparisons</span
+          >
+          <h2 class="mt-3 max-w-3xl text-3xl leading-tight font-bold tracking-tight sm:text-4xl">
+            The best free WordPress form plugins in 2026 (and what they really include)
+          </h2>
+          <p class="mt-4 max-w-2xl text-ink-soft">
+            Compare the free versions of VuloForm, Contact Form 7, WPForms, Ninja Forms, Formidable, Fluent Forms and
+            Forminator, and see which features sit behind a paywall.
+          </p>
+          <p class="mt-5 text-sm text-ink-soft">
+            26 October 2026<!-- -->
+            ·
+            <!-- -->4<!-- -->
+            min read<span class="ml-3 font-semibold text-navy">Read →</span>
+          </p></a
+        >
+        <ul class="mt-6 grid gap-5 md:grid-cols-2">
+          <li>
+            <a
+              class="group flex h-full flex-col rounded-[28px] border border-line bg-white p-7 transition-all hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lg"
+              href="../blog/multi-step-form-wordpress/index.html"
+              ><span class="text-xs font-semibold tracking-wide text-[#0f7a53] uppercase">How-to</span>
+              <h2 class="mt-2 text-xl leading-snug font-bold">
+                How to create a multi-step form in WordPress (free, no add-ons)
+              </h2>
+              <p class="mt-3 text-[15px] leading-relaxed text-ink-soft">
+                A practical guide to building a multi-step form in WordPress: when to use one, how to plan the steps,
+                and how to set it up free with VuloForm.
+              </p>
+              <p class="mt-auto pt-5 text-sm text-ink-soft">
+                24 October 2026<!-- -->
+                ·
+                <!-- -->4<!-- -->
+                min read
+              </p></a
+            >
+          </li>
+          <li>
+            <a
+              class="group flex h-full flex-col rounded-[28px] border border-line bg-white p-7 transition-all hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lg"
+              href="../blog/wordpress-conditional-logic-form/index.html"
+              ><span class="text-xs font-semibold tracking-wide text-[#0f7a53] uppercase">How-to</span>
+              <h2 class="mt-2 text-xl leading-snug font-bold">
+                WordPress conditional logic forms: how to show the right fields to the right people
+              </h2>
+              <p class="mt-3 text-[15px] leading-relaxed text-ink-soft">
+                Learn how conditional logic works in WordPress forms, with real examples, common mistakes, and why
+                server-side checking matters.
+              </p>
+              <p class="mt-auto pt-5 text-sm text-ink-soft">
+                22 October 2026<!-- -->
+                ·
+                <!-- -->4<!-- -->
+                min read
+              </p></a
+            >
+          </li>
+          <li>
+            <a
+              class="group flex h-full flex-col rounded-[28px] border border-line bg-white p-7 transition-all hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lg"
+              href="../blog/save-form-submissions-wordpress-database/index.html"
+              ><span class="text-xs font-semibold tracking-wide text-[#0f7a53] uppercase">How-to</span>
+              <h2 class="mt-2 text-xl leading-snug font-bold">
+                How to save form submissions in WordPress (and export them to CSV)
+              </h2>
+              <p class="mt-3 text-[15px] leading-relaxed text-ink-soft">
+                Why emailing form entries isn’t enough, how to store submissions in your WordPress database, and how to
+                search, manage and export them.
+              </p>
+              <p class="mt-auto pt-5 text-sm text-ink-soft">
+                20 October 2026<!-- -->
+                ·
+                <!-- -->4<!-- -->
+                min read
+              </p></a
+            >
+          </li>
+          <li>
+            <a
+              class="group flex h-full flex-col rounded-[28px] border border-line bg-white p-7 transition-all hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lg"
+              href="../blog/contact-form-7-alternatives/index.html"
+              ><span class="text-xs font-semibold tracking-wide text-[#0f7a53] uppercase">Comparisons</span>
+              <h2 class="mt-2 text-xl leading-snug font-bold">
+                Contact Form 7 alternatives: 6 free options that save your submissions
+              </h2>
+              <p class="mt-3 text-[15px] leading-relaxed text-ink-soft">
+                Looking for a Contact Form 7 alternative? Compare six free WordPress form plugins on builder, submission
+                storage, logic and cost.
+              </p>
+              <p class="mt-auto pt-5 text-sm text-ink-soft">
+                18 October 2026<!-- -->
+                ·
+                <!-- -->4<!-- -->
+                min read
+              </p></a
+            >
+          </li>
+          <li>
+            <a
+              class="group flex h-full flex-col rounded-[28px] border border-line bg-white p-7 transition-all hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lg"
+              href="../blog/stop-wordpress-form-spam-without-captcha/index.html"
+              ><span class="text-xs font-semibold tracking-wide text-[#0f7a53] uppercase">Security</span>
+              <h2 class="mt-2 text-xl leading-snug font-bold">How to stop WordPress form spam without a CAPTCHA</h2>
+              <p class="mt-3 text-[15px] leading-relaxed text-ink-soft">
+                Honeypots, minimum fill time and rate limiting: how to block spam on WordPress forms without puzzles,
+                third-party scripts or tracking.
+              </p>
+              <p class="mt-auto pt-5 text-sm text-ink-soft">
+                16 October 2026<!-- -->
+                ·
+                <!-- -->4<!-- -->
+                min read
+              </p></a
+            >
+          </li>
+          <li>
+            <a
+              class="group flex h-full flex-col rounded-[28px] border border-line bg-white p-7 transition-all hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lg"
+              href="../blog/gdpr-friendly-wordpress-forms/index.html"
+              ><span class="text-xs font-semibold tracking-wide text-[#0f7a53] uppercase">Privacy</span>
+              <h2 class="mt-2 text-xl leading-snug font-bold">GDPR-friendly WordPress forms: a practical checklist</h2>
+              <p class="mt-3 text-[15px] leading-relaxed text-ink-soft">
+                A practical checklist for building WordPress forms that respect visitor privacy: consent, data
+                minimisation, retention, IP addresses and data requests.
+              </p>
+              <p class="mt-auto pt-5 text-sm text-ink-soft">
+                14 October 2026<!-- -->
+                ·
+                <!-- -->4<!-- -->
+                min read
+              </p></a
+            >
+          </li>
+          <li>
+            <a
+              class="group flex h-full flex-col rounded-[28px] border border-line bg-white p-7 transition-all hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lg"
+              href="../blog/wordpress-calculator-quote-form/index.html"
+              ><span class="text-xs font-semibold tracking-wide text-[#0f7a53] uppercase">How-to</span>
+              <h2 class="mt-2 text-xl leading-snug font-bold">How to build a quote calculator form in WordPress</h2>
+              <p class="mt-3 text-[15px] leading-relaxed text-ink-soft">
+                Build a WordPress form that calculates prices live: plan your formula, use calculation fields, and make
+                sure totals can’t be tampered with.
+              </p>
+              <p class="mt-auto pt-5 text-sm text-ink-soft">
+                12 October 2026<!-- -->
+                ·
+                <!-- -->4<!-- -->
+                min read
+              </p></a
+            >
+          </li>
+          <li>
+            <a
+              class="group flex h-full flex-col rounded-[28px] border border-line bg-white p-7 transition-all hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lg"
+              href="../blog/wordpress-form-webhooks-zapier-make/index.html"
+              ><span class="text-xs font-semibold tracking-wide text-[#0f7a53] uppercase">Integrations</span>
+              <h2 class="mt-2 text-xl leading-snug font-bold">
+                WordPress form webhooks: send submissions to Zapier, Make or your CRM
+              </h2>
+              <p class="mt-3 text-[15px] leading-relaxed text-ink-soft">
+                What webhooks are, how to send WordPress form submissions to Zapier, Make or your own endpoint, and how
+                to handle retries and failures reliably.
+              </p>
+              <p class="mt-auto pt-5 text-sm text-ink-soft">
+                10 October 2026<!-- -->
+                ·
+                <!-- -->4<!-- -->
+                min read
+              </p></a
+            >
+          </li>
+          <li>
+            <a
+              class="group flex h-full flex-col rounded-[28px] border border-line bg-white p-7 transition-all hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lg"
+              href="../blog/secure-file-upload-forms-wordpress/index.html"
+              ><span class="text-xs font-semibold tracking-wide text-[#0f7a53] uppercase">Security</span>
+              <h2 class="mt-2 text-xl leading-snug font-bold">How to add secure file uploads to a WordPress form</h2>
+              <p class="mt-3 text-[15px] leading-relaxed text-ink-soft">
+                File uploads are one of the riskiest form features. Learn how to accept CVs, images and documents safely
+                in WordPress, and what to check on your server.
+              </p>
+              <p class="mt-auto pt-5 text-sm text-ink-soft">
+                8 October 2026<!-- -->
+                ·
+                <!-- -->4<!-- -->
+                min read
+              </p></a
+            >
+          </li>
+        </ul>
+      </div>
+      <section class="mx-auto mt-20 max-w-6xl px-4 sm:px-6">
+        <div
+          class="rounded-[32px] bg-gradient-to-br from-sky-soft via-white to-mint-soft px-6 py-14 text-center ring-1 ring-line sm:py-16"
+        >
+          <h2 class="mx-auto max-w-2xl text-3xl leading-tight font-bold tracking-tight sm:text-4xl">
+            Try VuloForm free
+          </h2>
+          <p class="mx-auto mt-4 max-w-lg text-ink-soft">
+            Install from Plugins › Add New, pick a template, hit Publish. No account, no subscription, no limits.
+          </p>
+          <div class="mt-8 flex flex-wrap justify-center gap-3">
+            <a
+              href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform"
+              class="rounded-full bg-navy px-7 py-3.5 font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-navy-light"
+              >Download VuloForm — free</a
+            ><a
+              href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform/docs"
+              class="rounded-full border border-line bg-white px-7 py-3.5 font-semibold transition-colors hover:border-navy/30"
+              >Read the docs</a
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="mx-auto max-w-6xl px-4 pt-10 pb-12 sm:px-6">
+      <div class="rounded-[32px] bg-white p-7 ring-1 ring-line sm:p-10">
+        <div class="grid gap-10 lg:grid-cols-[1.3fr_2fr]">
+          <div class="max-w-xs">
+            <span class="inline-flex items-center gap-2.5"
+              ><img src="../assets/images/brand-icon.svg" alt="" width="34" height="32" aria-hidden="true" /><span
+                class="display text-xl font-bold tracking-tight text-ink"
+                >Vulo<span class="text-navy">Form</span></span
+              ></span
+            >
+            <p class="mt-4 text-[15px] leading-relaxed text-ink-soft">
+              Build and review forms inside WordPress. Free, no account, no limits.
+            </p>
+            <a
+              href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform"
+              class="mt-6 inline-block rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-navy-light"
+              >Download — free</a
+            >
+          </div>
+          <div class="grid grid-cols-2 gap-8 sm:grid-cols-3">
+            <nav aria-labelledby="footer-product">
+              <h2 id="footer-product" class="text-xs font-bold tracking-wider text-ink uppercase">Product</h2>
+              <ul class="mt-4 space-y-3">
+                <li>
+                  <a class="text-[15px] text-ink-soft transition-colors hover:text-navy" href="../index.html#builder"
+                    >Builder</a
+                  >
+                </li>
+                <li>
+                  <a class="text-[15px] text-ink-soft transition-colors hover:text-navy" href="../index.html#logic"
+                    >Logic</a
+                  >
+                </li>
+                <li>
+                  <a class="text-[15px] text-ink-soft transition-colors hover:text-navy" href="../index.html#features"
+                    >Features</a
+                  >
+                </li>
+                <li>
+                  <a class="text-[15px] text-ink-soft transition-colors hover:text-navy" href="../index.html#privacy"
+                    >Privacy</a
+                  >
+                </li>
+                <li>
+                  <a class="text-[15px] text-ink-soft transition-colors hover:text-navy" href="../index.html#faq"
+                    >FAQ</a
+                  >
+                </li>
+              </ul>
+            </nav>
+            <nav aria-labelledby="footer-resources">
+              <h2 id="footer-resources" class="text-xs font-bold tracking-wider text-ink uppercase">Resources</h2>
+              <ul class="mt-4 space-y-3">
+                <li>
+                  <a class="text-[15px] text-ink-soft transition-colors hover:text-navy" href="../blog/index.html"
+                    >Blog</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform/docs/user"
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    >User guide</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform/docs/developer"
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    >Developers</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/vulolabs/vulolabs/tree/main/plugins/vuloform"
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    >Source code</a
+                  >
+                </li>
+              </ul>
+            </nav>
+            <nav aria-labelledby="footer-compare">
+              <h2 id="footer-compare" class="text-xs font-bold tracking-wider text-ink uppercase">Compare</h2>
+              <ul class="mt-4 space-y-3">
+                <li>
+                  <a class="text-[15px] text-ink-soft transition-colors hover:text-navy" href="../compare/index.html"
+                    >All comparisons</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    href="../compare/contact-form-7/index.html"
+                    >vs Contact Form 7</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    href="../compare/wpforms/index.html"
+                    >vs WPForms</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    href="../compare/gravity-forms/index.html"
+                    >vs Gravity Forms</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="text-[15px] text-ink-soft transition-colors hover:text-navy"
+                    href="../compare/ninja-forms/index.html"
+                    >vs Ninja Forms</a
+                  >
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <section aria-labelledby="more-from-vulolabs" class="mt-12 border-t border-line pt-8">
+          <h2 id="more-from-vulolabs" class="text-xs font-bold tracking-wider text-ink uppercase">
+            More from VuloLabs
+          </h2>
+          <ul class="mt-5 grid gap-3 md:grid-cols-3">
+            <li>
+              <a
+                href="https://www.vulolabs.com"
+                target="_blank"
+                rel="noopener"
+                class="group block h-full rounded-2xl bg-cream p-5 transition-all hover:-translate-y-0.5 hover:bg-sky-soft"
+                ><span class="flex items-center justify-between text-lg font-bold text-ink"
+                  >VuloLabs<span
+                    aria-hidden="true"
+                    class="text-navy transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    >↗</span
+                  ></span
+                ><span class="mt-1 block text-[15px] leading-snug text-ink-soft"
+                  >Product engineering for modern business</span
+                ><span class="sr-only"> (opens in a new tab)</span></a
+              >
+            </li>
+            <li>
+              <a
+                href="https://vulopilot.com"
+                target="_blank"
+                rel="noopener"
+                class="group block h-full rounded-2xl bg-cream p-5 transition-all hover:-translate-y-0.5 hover:bg-sky-soft"
+                ><span class="flex items-center justify-between text-lg font-bold text-ink"
+                  >VuloPilot<span
+                    aria-hidden="true"
+                    class="text-navy transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    >↗</span
+                  ></span
+                ><span class="mt-1 block text-[15px] leading-snug text-ink-soft"
+                  >The WordPress growth operating system</span
+                ><span class="sr-only"> (opens in a new tab)</span></a
+              >
+            </li>
+            <li>
+              <a
+                href="https://vuloform.com"
+                target="_blank"
+                rel="noopener"
+                class="group block h-full rounded-2xl bg-cream p-5 transition-all hover:-translate-y-0.5 hover:bg-sky-soft"
+                ><span class="flex items-center justify-between text-lg font-bold text-ink"
+                  >VuloForm<span
+                    aria-hidden="true"
+                    class="text-navy transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    >↗</span
+                  ></span
+                ><span class="mt-1 block text-[15px] leading-snug text-ink-soft"
+                  >Build and review forms inside WordPress</span
+                ><span class="sr-only"> (opens in a new tab)</span></a
+              >
+            </li>
+          </ul>
+        </section>
+        <div
+          class="mt-8 flex flex-col items-center justify-between gap-2 border-t border-line pt-6 text-sm text-ink-soft sm:flex-row"
+        >
+          <p>© 2026 VuloLabs. All rights reserved.</p>
+          <p class="flex items-center gap-2">
+            <span aria-hidden="true" class="h-2 w-2 rounded-full bg-mint"></span>Free and open source
+          </p>
+        </div>
+      </div>
+    </footer>
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/lenis.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>

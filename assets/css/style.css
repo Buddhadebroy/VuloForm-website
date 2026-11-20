@@ -2980,3 +2980,37 @@ html.go .draw-path {
   syntax: "*";
   inherits: false;
 }
+
+/* ---------- Contact page ---------- */
+.contact-grid { grid-template-columns: 1fr; align-items: start; }
+@media (min-width: 64rem) { .contact-grid { grid-template-columns: 1.6fr 1fr; } }
+.contact-side { align-content: start; }
+.cf-label { display: block; margin-bottom: 0.5rem; font-size: 0.875rem; font-weight: 700; color: var(--ink); }
+.cf-input {
+  width: 100%; font: inherit; font-size: 1rem; color: var(--ink);
+  background: var(--cream); border: 1.5px solid var(--line); border-radius: 1rem;
+  padding: 0.85rem 1.1rem; transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+.cf-input::placeholder { color: #4a557a99; }
+.cf-input:hover { border-color: #004bf24d; }
+.cf-input:focus { outline: 0; background: #fff; border-color: var(--navy); box-shadow: 0 0 0 4px #004bf21f; }
+textarea.cf-input { resize: vertical; min-height: 9rem; }
+.cf-err { display: none; margin-top: 0.4rem; font-size: 0.85rem; font-weight: 600; color: #d4183d; }
+.cf-field.invalid .cf-input { border-color: #d4183d; }
+.cf-field.invalid .cf-err { display: block; }
+.cf-chip {
+  display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer; user-select: none;
+  border: 1.5px solid var(--line); background: #fff; border-radius: 999px;
+  padding: 0.55rem 1rem; font-size: 0.9rem; font-weight: 600; color: var(--ink-soft);
+  transition: all 0.2s;
+}
+.cf-chip:hover { border-color: #004bf24d; color: var(--navy); }
+.cf-chip input { position: absolute; opacity: 0; pointer-events: none; }
+.cf-chip:has(input:checked) { border-color: var(--navy); background: var(--sky-soft); color: var(--navy); }
+.cf-chip:has(input:focus-visible) { box-shadow: 0 0 0 4px #004bf22e; }
+.cf-consent { align-items: flex-start; cursor: pointer; }
+.cf-check { margin-top: 0.2rem; width: 1.15rem; height: 1.15rem; flex-shrink: 0; accent-color: var(--navy); }
+.cf-send-error { color: #d4183d; }
+.cf-done { padding: 2.5rem 0; }
+.cf-tick { width: 4rem; height: 4rem; }
+button[data-contact-submit][disabled] { opacity: 0.6; pointer-events: none; }

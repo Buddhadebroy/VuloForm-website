@@ -420,6 +420,100 @@
     collapse($item.find("[data-faq-a]"), open);
   }
 
+  /* ---------- contact form ---------- */
+  $("[data-contact-form]").each(function () {
+    var $f = $(this);
+    var $bug = $f.find("[data-contact-bug]");
+    var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    var checks = {
+      name: function (v) { return $.trim(v) !== ""; },
+      email: function (v) { return emailRe.test($.trim(v)); },
+      message: function (v) { return $.trim(v).length >= 10; },
+    };
+
+    function topic() {
+      return $f.find("input[name=topic]:checked").val();
+    }
+    function check($el) {
+      var name = $el.attr("name"), ok;
+      if (name === "consent") ok = $el.is(":checked");
+      else if (checks[name]) ok = checks[name]($el.val());
+      else return true;
+      $el.closest(".cf-field").toggleClass("invalid", !ok);
+      return ok;
+    }
+    function showPane(name) {
+      $f.find("[data-contact-pane]").each(function () {
+        $(this).attr("hidden", $(this).data("contact-pane") !== name);
+      });
+    }
+
+    $f.on("change", "input[name=topic]", function () {
+      $bug.attr("hidden", topic() !== "Bug report");
+    });
+    $f.on("input change", "input, textarea", function () {
+      if ($(this).closest(".cf-field").hasClass("invalid")) check($(this));
+    });
+
+    $f.on("submit", function (e) {
+      e.preventDefault();
+      var ok = true, $first = null;
+      $f.find("[name=name], [name=email], [name=message], [name=consent]").each(function () {
+        if (!check($(this))) {
+          ok = false;
+          if (!$first) $first = $(this);
+        }
+      });
+      if (!ok) {
+        $first.trigger("focus");
+        return;
+      }
+      if ($f.find("[name=company]").val()) return; // spam trap filled: drop silently
+
+      var data = {};
+      $.each($f.serializeArray(), function (_, p) {
+        data[p.name] = p.value;
+      });
+      if (topic() !== "Bug report") {
+        delete data.website;
+        delete data.version;
+      }
+      delete data.company;
+
+      function done() {
+        $f.find("[data-contact-who]").text($.trim(data.name).split(" ")[0] || "there");
+        $f.find("[data-contact-email]").text($.trim(data.email));
+        showPane("done");
+        if (lenis) lenis.scrollTo($f.closest(".rv")[0], { offset: -120 });
+      }
+
+      var endpoint = $f.data("endpoint");
+      var $btn = $f.find("[data-contact-submit]");
+      var $err = $f.find("[data-contact-error]");
+      $err.attr("hidden", true);
+      if (!endpoint) {
+        done();
+        return;
+      }
+      $btn.prop("disabled", true).text("Sending…");
+      $.ajax({ url: endpoint, method: "POST", data: JSON.stringify(data), contentType: "application/json" })
+        .done(done)
+        .fail(function () {
+          $err.attr("hidden", false);
+        })
+        .always(function () {
+          $btn.prop("disabled", false).text("Send message");
+        });
+    });
+
+    $f.on("click", "[data-contact-reset]", function () {
+      $f[0].reset();
+      $f.find(".cf-field").removeClass("invalid");
+      $bug.attr("hidden", true);
+      showPane("form");
+    });
+  });
+
   /* ---------- blog table of contents ---------- */
   var $tocLinks = $("[data-toc] a");
   if ($tocLinks.length && "IntersectionObserver" in window) {
